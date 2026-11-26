@@ -1,0 +1,65 @@
+from enum import Enum
+
+
+class ClothingType(Enum):
+    SHIRT = 1
+    JEANS = 2
+    JACKET = 3
+    SWEATER = 4
+    SHOES = 5
+    HAT = 6
+
+
+class Clothing:
+    def __init__(self, name, description, location, colour, size, clothing_type):
+        self.name = name
+        self.description = description
+        self.location = location
+        self.colour = colour
+        self.size = size
+        self.clothing_type = clothing_type
+
+    # Додатковий метод класу одягу
+    def info(self):
+        return (f"{self.name} | {self.clothing_type.name} | {self.description} | "
+                f"{self.location} | {self.colour} | розмір {self.size}")
+
+
+class Wardrobe:
+    def __init__(self):
+        self.items = []
+
+    def add(self, clothing):
+        self.items.append(clothing)
+
+    # Сортування одягу за розміром
+    def sort_by_size(self):
+        self.items.sort(key=lambda c: c.size)
+
+    def show(self):
+        for c in self.items:
+            print(c.info())
+
+
+def can_go_out(clothes):
+    types = {c.clothing_type for c in clothes}
+    return len(types) > 3
+
+
+if __name__ == "__main__":
+    wardrobe = Wardrobe()
+    wardrobe.add(Clothing("Футболка", "Бавовняна", "Шафа", "білий", 48, ClothingType.SHIRT))
+    wardrobe.add(Clothing("Джинси", "Прямі", "Полиця", "синій", 44, ClothingType.JEANS))
+    wardrobe.add(Clothing("Куртка", "Зимова", "Вішак", "чорний", 50, ClothingType.JACKET))
+    wardrobe.add(Clothing("Кросівки", "Спортивні", "Взуттєва шафа", "сірий", 42, ClothingType.SHOES))
+
+    wardrobe.sort_by_size()
+    wardrobe.show()
+
+    unique_types_count = len({c.clothing_type for c in wardrobe.items})
+    print(f"Кількість типів одягу: {unique_types_count}")
+
+    if can_go_out(wardrobe.items):
+        print("Так, можна виходити на вулицю")
+    else:
+        print("Ні, не можна виходити на вулицю")
